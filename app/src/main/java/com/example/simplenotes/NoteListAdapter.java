@@ -66,6 +66,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
             Toast.makeText(v.getContext(),"OnClick"+id,Toast.LENGTH_LONG).show();
             v.getContext().startActivity(intent);
+            //v.getContext().stopService(intent);
         }
 
         @Override

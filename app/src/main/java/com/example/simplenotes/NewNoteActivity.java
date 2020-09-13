@@ -116,15 +116,19 @@ public class NewNoteActivity extends AppCompatActivity {
             }
         });
     }
+    int i=0;
 
     public void setCheckBox(){
         if (mCheckDeadLine.isChecked()) {
+
             mButtonDeadline.setClickable(true);
             mTextDeadline.setClickable(true);
             mTextDeadline.setLongClickable(true);
             mTextDeadline.setCursorVisible(true);
             mTextDeadline.setClickable(true);
             setInitialDateTime();
+
+
             Toast.makeText(getApplicationContext(), "Включено", Toast.LENGTH_SHORT).show();
         } else {
             mButtonDeadline.setClickable(false);
@@ -132,6 +136,7 @@ public class NewNoteActivity extends AppCompatActivity {
             mTextDeadline.setCursorVisible(false);
             mTextDeadline.setClickable(false);
             mTextDeadline.setText(null);
+
             Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();
         }
     }
@@ -186,8 +191,14 @@ public class NewNoteActivity extends AppCompatActivity {
             date = fmt.parse(mTextDeadline.getText().toString());
 
         } catch (ParseException e) {
+
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Неверный формат даты", Toast.LENGTH_SHORT).show();
+            if (!mCheckDeadLine.isChecked()) return 0;
+            else {
+                Toast.makeText(getApplicationContext(), "Неверный формат даты", Toast.LENGTH_SHORT).show();
+                //finish();
+                //date=null;
+            }
         }
         return date.getTime();
 
