@@ -54,19 +54,19 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             String desc = noteSelect.getDesc();
             int id= noteSelect.getId();
             long millisecods= noteSelect.getDeadline();
-            String dedline=getDate(millisecods);
+            //String dedline=getDate(millisecods);
             boolean checkBox=noteSelect.isCheckDead();
 
             checkSaveUpdate = true;
             intent.putExtra(EXTRA_UPDATE_TITLE, title);
             intent.putExtra(EXTRA_UPDATE_DESC, desc);
             intent.putExtra(EXTRA_UPDATE_ID, id);
-            intent.putExtra(EXTRA_UPDATE_DEDLINE, dedline);
+            intent.putExtra(EXTRA_UPDATE_DEDLINE, millisecods);
             intent.putExtra(EXTRA_UPDATE_CHECKBOX, checkBox);
 
-            Toast.makeText(v.getContext(),"OnClick"+id,Toast.LENGTH_LONG).show();
+            //Toast.makeText(v.getContext(),"OnClick"+id,Toast.LENGTH_LONG).show();
             v.getContext().startActivity(intent);
-            //v.getContext().stopService(intent);
+
         }
 
         @Override
@@ -99,7 +99,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             holder.titleItemView.setText(current.getTitle());
             holder.descItemView.setText(current.getDesc());
             long millisecods= current.getDeadline();
-            holder.dateItemView.setText(getDate(millisecods));
+            if(millisecods==0)holder.dateItemView.setMaxHeight(0);
+            else {
+                holder.dateItemView.setMaxHeight(100);
+                holder.dateItemView.setText(getDate(millisecods));
+            }
         } else {
             // Covers the case of data not being ready yet.
             holder.titleItemView.setText("No Title");

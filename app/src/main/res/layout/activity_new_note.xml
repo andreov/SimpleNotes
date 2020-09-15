@@ -50,6 +50,7 @@
             android:layout_weight="5"
             android:ems="10"
             android:hint="@string/dedlineDate"
+            android:onClick="setDate"
             android:inputType="date"
             android:visibility="visible" />
 
