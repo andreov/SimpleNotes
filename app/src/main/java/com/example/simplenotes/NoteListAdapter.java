@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         private final TextView titleItemView;
         private final TextView descItemView;
         private final TextView dateItemView;
+        private final CardView cardView;
        //private WordViewModel mWordViewModel;
 
         private NoteViewHolder(View itemView) {
@@ -38,12 +40,16 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             titleItemView = itemView.findViewById(R.id.textViewTitle);
             descItemView = itemView.findViewById(R.id.textViewDesc);
             dateItemView= itemView.findViewById(R.id.date);
-            titleItemView.setOnClickListener(this);
-            descItemView.setOnClickListener(this);
-            dateItemView.setOnClickListener(this);
-            titleItemView.setOnLongClickListener(this);
-            descItemView.setOnLongClickListener(this);
-            dateItemView.setOnLongClickListener(this);
+            cardView=itemView.findViewById(R.id.cardView);
+
+//            titleItemView.setOnClickListener(this);
+//            descItemView.setOnClickListener(this);
+//            dateItemView.setOnClickListener(this);
+//            titleItemView.setOnLongClickListener(this);
+//            descItemView.setOnLongClickListener(this);
+//            dateItemView.setOnLongClickListener(this);
+            cardView.setOnClickListener(this);
+            cardView.setOnLongClickListener(this);
 
         }
         @Override
@@ -72,7 +78,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         @Override
         public boolean onLongClick(View v) {
             mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
-            Toast.makeText(v.getContext(),"LongDelete",Toast.LENGTH_LONG).show();
+            Toast.makeText(v.getContext(),"Delete Note",Toast.LENGTH_LONG).show();
             notifyDataSetChanged();
             return false;
         }
