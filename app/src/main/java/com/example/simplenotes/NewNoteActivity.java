@@ -6,10 +6,15 @@ package com.example.simplenotes;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -53,25 +58,62 @@ public class NewNoteActivity extends AppCompatActivity {
     private ImageButton mButtonDeadline;
     private Calendar mDateDeadline;
     private long milliseconds;
+    private Toolbar myToolbar;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
+        myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+
+        backButtonToolbar();
 
         initViews();
         setCheckBox();
         noteUpdate(checkSaveUpdate);
-
         checkDeadLine();
-        clickButtonSave();
+        //clickButtonSave();
 
     }
+    public void backButtonToolbar(){
+        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+                //Toast.makeText(NewNoteActivity.this, "BackButton Click", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_new_note, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menuSave:
+                clickSave();
+                Toast.makeText(NewNoteActivity.this, "Save Note", Toast.LENGTH_LONG).show();
+
+                return true;
+            default:
+                return true;
+        }
+    }
+
+
     public void initViews(){
         mEditTitleView = findViewById(R.id.edit_title);
         mEditDescView = findViewById(R.id.edit_desc);
-        mButtonSave=findViewById(R.id.button_save);
+        //mButtonSave=findViewById(R.id.button_save);
         mCheckDeadLine=findViewById((R.id.checkBox));
         mButtonDeadline =findViewById(R.id.calendarDeadLine);
         //mButtonDeadline.setClickable(false);
@@ -83,37 +125,33 @@ public class NewNoteActivity extends AppCompatActivity {
         mDateDeadline=Calendar.getInstance();
     }
 
-    private void clickButtonSave(){
-        mButtonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(NewNoteActivity.this, MainActivity.class);
-                if(checkSaveUpdate){ //(TextUtils.isEmpty(mEditWordView.getText())) {
-                    String title = mEditTitleView.getText().toString();
-                    String desc = mEditDescView.getText().toString();
-                    long dedline= milliseconds;
-                    //long dedline= textTolong();
-                    boolean checkDedline=mCheckDeadLine.isChecked();
-                    Note note =new Note(title,desc,dedline,checkDedline);
-                    note.setId(idUpd);
-                    mNoteViewModel.update(note);
-                    checkSaveUpdate =false;
-                    //startActivity(intent);
-                    finish();
-                } else {
-                    String title = mEditTitleView.getText().toString();
-                    String desc = mEditDescView.getText().toString();
-                    long dedline= milliseconds;
-                    //long dedline= textTolong();
-                    boolean checkDedline=mCheckDeadLine.isChecked();
-                    Note note =new Note(title,desc,dedline,checkDedline);
-                    mNoteViewModel.insert(note);
-                    //startActivity(intent);
-                    finish();
-                }
-            }
-        });
+    private void clickSave(){
+        Intent intent = new Intent(NewNoteActivity.this, MainActivity.class);
+        if(checkSaveUpdate){ //(TextUtils.isEmpty(mEditWordView.getText())) {
+            String title = mEditTitleView.getText().toString();
+            String desc = mEditDescView.getText().toString();
+            long dedline= milliseconds;
+            //long dedline= textTolong();
+            boolean checkDedline=mCheckDeadLine.isChecked();
+            Note note =new Note(title,desc,dedline,checkDedline);
+            note.setId(idUpd);
+            mNoteViewModel.update(note);
+            checkSaveUpdate =false;
+            //startActivity(intent);
+            finish();
+        } else {
+            String title = mEditTitleView.getText().toString();
+            String desc = mEditDescView.getText().toString();
+            long dedline= milliseconds;
+            //long dedline= textTolong();
+            boolean checkDedline=mCheckDeadLine.isChecked();
+            Note note =new Note(title,desc,dedline,checkDedline);
+            mNoteViewModel.insert(note);
+            //startActivity(intent);
+            finish();
+        }
     }
+
     private void checkDeadLine(){
         mCheckDeadLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -139,7 +177,7 @@ public class NewNoteActivity extends AppCompatActivity {
             mTextDeadline.setClickable(false);
             //mTextDeadline.setFocusable(false);
             mTextDeadline.setText(null);
-            milliseconds= 0;
+            milliseconds=0;
             //mDateDeadline.clear();
 
             Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();

@@ -7,6 +7,11 @@
     android:orientation="vertical"
     android:visibility="visible">
 
+    <include
+        android:id="@+id/my_toolbar"
+        layout="@layout/toolbar_main"/>
+
+
     <EditText
         android:id="@+id/edit_title"
         android:layout_width="match_parent"
@@ -63,16 +68,6 @@
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_padding"
-        android:background="@color/colorPrimary"
-        android:text="@string/button_save"
-        android:textColor="@color/buttonLabel" />
 
 
 </LinearLayout>

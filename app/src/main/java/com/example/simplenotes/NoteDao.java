@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface NoteDao {
 
-    @Query("SELECT * from note_table ORDER BY id ASC")
+    @Query("SELECT * from note_table ORDER BY deadline ASC, id DESC ")
     LiveData<List<Note>> getAlphabetizedWords();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

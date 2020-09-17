@@ -2,6 +2,8 @@ package com.example.simplenotes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,7 +12,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,16 +26,18 @@ import static com.example.simplenotes.NoteListAdapter.checkSaveUpdate;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
+    //public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
     //public static final int UPDATE_WORD_ACTIVITY_REQUEST_CODE = 2;
-
-
+    private Toolbar myToolbar;
     public static NoteViewModel mNoteViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        //ActionBar actionbar = getSupportActionBar();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final NoteListAdapter adapter = new NoteListAdapter(this);
@@ -62,6 +68,26 @@ public class MainActivity extends AppCompatActivity {
                 //finish();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menuSetting:
+                //clickSave();
+                Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_LONG).show();
+
+                return true;
+            default:
+                return true;
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleNotes</string>
+    <string name="app_name">Мои заметки</string>
     <string name="action_settings">Настройки</string>
     <string name="hint_word">Заголовок заметки</string>
     <string name="hint_Desc">Текст заметки</string>
@@ -7,4 +7,6 @@
     <string name="empty_not_saved">Note not saved because it is empty.</string>
     <string name="add_word">Добавить заметку</string>
     <string name="dedlineDate">Введите дату дедлайна</string>
+    <string name="save">Save</string>
+    <string name="newNote">Новая заметка</string>
 </resources>
