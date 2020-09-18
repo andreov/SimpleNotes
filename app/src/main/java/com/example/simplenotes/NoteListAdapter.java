@@ -3,6 +3,8 @@ package com.example.simplenotes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -104,11 +108,23 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             Note current = mNotes.get(position);
             holder.titleItemView.setText(current.getTitle());
             holder.descItemView.setText(current.getDesc());
-            long millisecods= current.getDeadline();
-            if(millisecods==0)holder.dateItemView.setMaxHeight(0);
+            long dateDedline= current.getDeadline();
+            long currentDate=System.currentTimeMillis();
+            //Resources res = getResources();
+            //int redColorValue = ContextCompat.getColor(, R.color.colorPrimary);
+            //int greyColorValue= Color.parseColor("@color/cardView");
+            if((currentDate-dateDedline)>0 && dateDedline>0) {
+                holder.cardView.setBackgroundResource(R.color.colorAccent);
+
+            }else if(((currentDate+43200000)-dateDedline)>0 && dateDedline>0){
+                holder.cardView.setBackgroundResource(R.color.dedlineCurrent);
+            }else {
+                holder.cardView.setBackgroundResource(R.color.cardView);
+            }
+            if(dateDedline==0)holder.dateItemView.setMaxHeight(0);
             else {
                 holder.dateItemView.setMaxHeight(100);
-                holder.dateItemView.setText(getDate(millisecods));
+                holder.dateItemView.setText(getDate(dateDedline));
             }
         } else {
             // Covers the case of data not being ready yet.

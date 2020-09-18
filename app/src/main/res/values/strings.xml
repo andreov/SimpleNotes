@@ -9,4 +9,6 @@
     <string name="dedlineDate">Введите дату дедлайна</string>
     <string name="save">Save</string>
     <string name="newNote">Новая заметка</string>
+    <string name="editNote">Редактирование</string>
+
 </resources>

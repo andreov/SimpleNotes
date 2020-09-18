@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="buttonLabel">#FFFFFF</color>
     <color name="cardView">#E6E6E6</color>
+    <color name="dateView">#858585</color>
+    <color name="dedlineCurrent">#FFC107</color>
+
 </resources>

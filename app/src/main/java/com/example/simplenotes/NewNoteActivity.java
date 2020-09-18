@@ -12,31 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static com.example.simplenotes.MainActivity.mNoteViewModel;
 import static com.example.simplenotes.NoteListAdapter.EXTRA_UPDATE_CHECKBOX;
 import static com.example.simplenotes.NoteListAdapter.EXTRA_UPDATE_DEDLINE;
@@ -54,7 +39,6 @@ public class NewNoteActivity extends AppCompatActivity {
     private EditText mEditTitleView;
     private EditText mEditDescView;
     private EditText mTextDeadline;
-    private Button mButtonSave;
     private ImageButton mButtonDeadline;
     private Calendar mDateDeadline;
     private long milliseconds;
@@ -71,12 +55,11 @@ public class NewNoteActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
 
         backButtonToolbar();
-
         initViews();
         setCheckBox();
         noteUpdate(checkSaveUpdate);
         checkDeadLine();
-        //clickButtonSave();
+
 
     }
     public void backButtonToolbar(){
@@ -84,7 +67,6 @@ public class NewNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                //Toast.makeText(NewNoteActivity.this, "BackButton Click", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -113,10 +95,8 @@ public class NewNoteActivity extends AppCompatActivity {
     public void initViews(){
         mEditTitleView = findViewById(R.id.edit_title);
         mEditDescView = findViewById(R.id.edit_desc);
-        //mButtonSave=findViewById(R.id.button_save);
         mCheckDeadLine=findViewById((R.id.checkBox));
         mButtonDeadline =findViewById(R.id.calendarDeadLine);
-        //mButtonDeadline.setClickable(false);
         mTextDeadline=findViewById(R.id.TextDeadline);
         mTextDeadline.setFocusable(false);
         //mTextDeadline.setLongClickable(false);
@@ -126,12 +106,11 @@ public class NewNoteActivity extends AppCompatActivity {
     }
 
     private void clickSave(){
-        Intent intent = new Intent(NewNoteActivity.this, MainActivity.class);
+        //Intent intent = new Intent(NewNoteActivity.this, MainActivity.class);
         if(checkSaveUpdate){ //(TextUtils.isEmpty(mEditWordView.getText())) {
             String title = mEditTitleView.getText().toString();
             String desc = mEditDescView.getText().toString();
             long dedline= milliseconds;
-            //long dedline= textTolong();
             boolean checkDedline=mCheckDeadLine.isChecked();
             Note note =new Note(title,desc,dedline,checkDedline);
             note.setId(idUpd);
@@ -143,7 +122,6 @@ public class NewNoteActivity extends AppCompatActivity {
             String title = mEditTitleView.getText().toString();
             String desc = mEditDescView.getText().toString();
             long dedline= milliseconds;
-            //long dedline= textTolong();
             boolean checkDedline=mCheckDeadLine.isChecked();
             Note note =new Note(title,desc,dedline,checkDedline);
             mNoteViewModel.insert(note);
@@ -178,9 +156,7 @@ public class NewNoteActivity extends AppCompatActivity {
             //mTextDeadline.setFocusable(false);
             mTextDeadline.setText(null);
             milliseconds=0;
-            //mDateDeadline.clear();
-
-            Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -201,16 +177,11 @@ public class NewNoteActivity extends AppCompatActivity {
                 mTextDeadline.setClickable(true);
                 mTextDeadline.setText(DateUtils.formatDateTime(this, dedline,
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
-
             }
             else {
                 milliseconds=0;
                 return;
             }
-            //setCheckBox();
-            //mTextDeadline.setText(dedline);
-
-
 
         }else return;
     }
@@ -239,29 +210,24 @@ public class NewNoteActivity extends AppCompatActivity {
         mTextDeadline.setText(DateUtils.formatDateTime(this, mDateDeadline.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
         milliseconds = mDateDeadline.getTimeInMillis();
-        //mDateDeadline.clear();
     }
 
-    private long textTolong(){
-        SimpleDateFormat fmt = new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault());
-        Date date=null;
-        try {
-            date = fmt.parse(mTextDeadline.getText().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            if (!mCheckDeadLine.isChecked()) return 0;
-            else {
-                Toast.makeText(getApplicationContext(), "Неверный формат даты", Toast.LENGTH_SHORT).show();
-                //finish();
-                //date=null;
-            }
-        }
-        return date.getTime();
-    }
-
-
-
-
+//    private long textTolong(){
+//        SimpleDateFormat fmt = new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault());
+//        Date date=null;
+//        try {
+//            date = fmt.parse(mTextDeadline.getText().toString());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            if (!mCheckDeadLine.isChecked()) return 0;
+//            else {
+//                Toast.makeText(getApplicationContext(), "Неверный формат даты", Toast.LENGTH_SHORT).show();
+//                //finish();
+//                //date=null;
+//            }
+//        }
+//        return date.getTime();
+//    }
 
 
 //    String input = "Sat Feb 17 2012";
@@ -269,25 +235,5 @@ public class NewNoteActivity extends AppCompatActivity {
 //    long milliseconds = date.getTime();
 //    long millisecondsFromNow = milliseconds - (new Date()).getTime();
 //    Toast.makeText(this, "Milliseconds to future date="+millisecondsFromNow, Toast.LENGTH_SHORT).show();
-
-//    object TiviTypeConverters {
-//        private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-//
-//        @TypeConverter
-//        @JvmStatic
-//        fun toOffsetDateTime(value: String?): OffsetDateTime? {
-//        return value?.let {
-//            return formatter.parse(value, OffsetDateTime::from)
-//        }
-//    }
-//
-//        @TypeConverter
-//        @JvmStatic
-//        fun fromOffsetDateTime(date: OffsetDateTime?): String? {
-//        return date?.format(formatter)
-//    }
-
-
-
 }
 
