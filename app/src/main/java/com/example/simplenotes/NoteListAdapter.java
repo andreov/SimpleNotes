@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.ColorRes;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.security.AccessController;
 import java.util.List;
 
 import static com.example.simplenotes.MainActivity.mNoteViewModel;
@@ -110,17 +112,23 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             holder.descItemView.setText(current.getDesc());
             long dateDedline= current.getDeadline();
             long currentDate=System.currentTimeMillis();
-            //Resources res = getResources();
-            //int redColorValue = ContextCompat.getColor(, R.color.colorPrimary);
-            //int greyColorValue= Color.parseColor("@color/cardView");
-            if((currentDate-dateDedline)>0 && dateDedline>0) {
-                holder.cardView.setBackgroundResource(R.color.colorAccent);
+            final int DAY=1000*60*60*24;
+            //int backgroundColor = ContextCompat.getColor(View.getContext(), R.color.dedlineDown);
 
-            }else if(((currentDate+43200000)-dateDedline)>0 && dateDedline>0){
-                holder.cardView.setBackgroundResource(R.color.dedlineCurrent);
+            if((currentDate/DAY)>(dateDedline/DAY)) {
+                //holder.cardView.setBackgroundResource(R.color.dedlineDown);
+                //holder.titleItemView.setBackgroundResource(R.color.dedlineDown);
+                //holder.descItemView.setBackgroundResource(R.color.dedlineDown);
+                holder.dateItemView.setBackgroundResource(R.color.dedlineDown);
+                //holder.dateItemView.setCResource(R.color.dedlineDown);
+
+            }else if((currentDate/DAY)==(dateDedline/DAY)){
+                //holder.cardView.setBackgroundResource(R.color.dedlineCurrent);
+                holder.dateItemView.setBackgroundResource(R.color.dedlineCurrent);
             }else {
-                holder.cardView.setBackgroundResource(R.color.cardView);
+                holder.dateItemView.setBackgroundResource(R.color.cardView);
             }
+
             if(dateDedline==0)holder.dateItemView.setMaxHeight(0);
             else {
                 holder.dateItemView.setMaxHeight(100);

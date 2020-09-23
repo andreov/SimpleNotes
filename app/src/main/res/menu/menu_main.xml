@@ -8,7 +8,8 @@
         android:id="@+id/menuSetting"
         android:icon="@drawable/ic_settings"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="set" />
+        android:title="set"
+        android:visible="true"
+        app:showAsAction="always" />
 
 </menu>

@@ -171,12 +171,14 @@ public class NewNoteActivity extends AppCompatActivity {
             mEditTitleView.setText(titleUpd);
             mEditDescView.setText(descUpd);
 
-            if(mCheckDeadLine.isChecked()){
+            if(checkdedline){
+                //mDateDeadline=Calendar.getInstance();
                 mDateDeadline.setTimeInMillis(dedline);
                 mButtonDeadline.setClickable(true);
                 mTextDeadline.setClickable(true);
                 mTextDeadline.setText(DateUtils.formatDateTime(this, dedline,
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                milliseconds=dedline;
             }
             else {
                 milliseconds=0;
