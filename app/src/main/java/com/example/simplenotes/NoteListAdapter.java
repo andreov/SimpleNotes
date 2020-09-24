@@ -1,7 +1,9 @@
 package com.example.simplenotes;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -83,8 +85,34 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
         @Override
         public boolean onLongClick(View v) {
-            mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
-            Toast.makeText(v.getContext(),"Delete Note",Toast.LENGTH_LONG).show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    v.getContext());
+            alertDialogBuilder.setTitle("Удаление заметки");
+            alertDialogBuilder
+                    .setMessage("Вы хотите удалить заметку?")
+                    .setCancelable(true)
+                    .setPositiveButton("Да",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int arg1) {
+                                    mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
+                                    //notifyDataSetChanged();
+                                    Toast.makeText(v.getContext(), "Заметка удалена", Toast.LENGTH_LONG).show();
+                                    // Handle Positive Button
+                                }
+                            })
+                    .setNegativeButton("Нет",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int arg1) {
+                                    Toast.makeText(v.getContext(), "Отмена удаления", Toast.LENGTH_LONG).show();
+                                    // Handle Negative Button
+                                    dialog.cancel();
+                                }
+                            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            //mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
+            //Toast.makeText(v.getContext(),"Delete Note",Toast.LENGTH_LONG).show();
             notifyDataSetChanged();
             return false;
         }
@@ -162,6 +190,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         return textDeadline;
 
     }
+
+
 
 
 }

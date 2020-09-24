@@ -1,5 +1,7 @@
 package com.example.simplenotes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -88,6 +90,34 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void dialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                MainActivity.this);
+        alertDialogBuilder.setTitle("Удаление заметки");
+        alertDialogBuilder
+                .setMessage("Вы хотите удалить заметку?")
+                .setCancelable(true)
+                .setPositiveButton("Да",
+                        new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                Toast.makeText(MainActivity.this, "Заметка удалена", Toast.LENGTH_LONG).show();
+                                // Handle Positive Button
+                            }
+                        })
+                .setNegativeButton("Нет",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                Toast.makeText(MainActivity.this, "Отмена удаления", Toast.LENGTH_LONG).show();
+                                // Handle Negative Button
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }
