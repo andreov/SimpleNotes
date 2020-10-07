@@ -1,10 +1,6 @@
 package com.example.simplenotes;
 
-
-
-
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -12,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +37,7 @@ public class NewNoteActivity extends AppCompatActivity {
     private EditText mTextDeadline;
     private ImageButton mButtonDeadline;
     private Calendar mDateDeadline;
-    private long milliseconds;
+    private long setDateDedline;
     private Toolbar myToolbar;
 
 
@@ -106,9 +101,6 @@ public class NewNoteActivity extends AppCompatActivity {
         mButtonDeadline =findViewById(R.id.calendarDeadLine);
         mTextDeadline=findViewById(R.id.TextDeadline);
         mTextDeadline.setFocusable(false);
-        //mTextDeadline.setLongClickable(false);
-        //mTextDeadline.setCursorVisible(false);
-        ///mTextDeadline.setClickable(false);
         mDateDeadline=Calendar.getInstance();
     }
 
@@ -117,7 +109,7 @@ public class NewNoteActivity extends AppCompatActivity {
         if(checkSaveUpdate){ //(TextUtils.isEmpty(mEditWordView.getText())) {
             String title = mEditTitleView.getText().toString();
             String desc = mEditDescView.getText().toString();
-            long dedline= milliseconds;
+            long dedline= setDateDedline;
             boolean checkDedline=mCheckDeadLine.isChecked();
             Note note =new Note(title,desc,dedline,checkDedline);
             note.setId(idUpd);
@@ -128,7 +120,7 @@ public class NewNoteActivity extends AppCompatActivity {
         } else {
             String title = mEditTitleView.getText().toString();
             String desc = mEditDescView.getText().toString();
-            long dedline= milliseconds;
+            long dedline= setDateDedline;
             boolean checkDedline=mCheckDeadLine.isChecked();
             Note note =new Note(title,desc,dedline,checkDedline);
             mNoteViewModel.insert(note);
@@ -154,7 +146,7 @@ public class NewNoteActivity extends AppCompatActivity {
             //mTextDeadline.setCursorVisible(true);
             mDateDeadline=Calendar.getInstance();
             setInitialDateTime();
-            Toast.makeText(getApplicationContext(), "Включено", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Включено", Toast.LENGTH_SHORT).show();
         } else {
             mButtonDeadline.setClickable(false);
             mTextDeadline.setLongClickable(false);
@@ -162,7 +154,7 @@ public class NewNoteActivity extends AppCompatActivity {
             mTextDeadline.setClickable(false);
             //mTextDeadline.setFocusable(false);
             mTextDeadline.setText(null);
-            milliseconds=0;
+            setDateDedline =0;
             //Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();
         }
     }
@@ -179,16 +171,16 @@ public class NewNoteActivity extends AppCompatActivity {
             mEditDescView.setText(descUpd);
 
             if(checkdedline){
-                //mDateDeadline=Calendar.getInstance();
-                mDateDeadline.setTimeInMillis(dedline);
+                mDateDeadline=Calendar.getInstance();
+                //mDateDeadline.setTimeInMillis(dedline);
                 mButtonDeadline.setClickable(true);
                 mTextDeadline.setClickable(true);
                 mTextDeadline.setText(DateUtils.formatDateTime(this, dedline,
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
-                milliseconds=dedline;
+                //setDateDedline =dedline;
             }
             else {
-                milliseconds=0;
+                setDateDedline =0;
                 return;
             }
 
@@ -218,31 +210,8 @@ public class NewNoteActivity extends AppCompatActivity {
     private void setInitialDateTime() {
         mTextDeadline.setText(DateUtils.formatDateTime(this, mDateDeadline.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
-        milliseconds = mDateDeadline.getTimeInMillis();
+        setDateDedline = mDateDeadline.getTimeInMillis();
     }
 
-//    private long textTolong(){
-//        SimpleDateFormat fmt = new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault());
-//        Date date=null;
-//        try {
-//            date = fmt.parse(mTextDeadline.getText().toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            if (!mCheckDeadLine.isChecked()) return 0;
-//            else {
-//                Toast.makeText(getApplicationContext(), "Неверный формат даты", Toast.LENGTH_SHORT).show();
-//                //finish();
-//                //date=null;
-//            }
-//        }
-//        return date.getTime();
-//    }
-
-
-//    String input = "Sat Feb 17 2012";
-//    Date date = new SimpleDateFormat("EEE MMM dd yyyy", Locale.ENGLISH).parse(input);
-//    long milliseconds = date.getTime();
-//    long millisecondsFromNow = milliseconds - (new Date()).getTime();
-//    Toast.makeText(this, "Milliseconds to future date="+millisecondsFromNow, Toast.LENGTH_SHORT).show();
 }
 

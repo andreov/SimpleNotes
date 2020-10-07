@@ -5,24 +5,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.ColorRes;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.security.AccessController;
 import java.util.List;
-
 import static com.example.simplenotes.MainActivity.mNoteViewModel;
 
 
@@ -34,6 +25,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     public static final String EXTRA_UPDATE_DEDLINE = "DEDLINE";
     public static final String EXTRA_UPDATE_CHECKBOX = "CHECKBOX";
     public static boolean checkSaveUpdate = false;
+
 
 
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -111,8 +103,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            //mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
-            //Toast.makeText(v.getContext(),"Delete Note",Toast.LENGTH_LONG).show();
             notifyDataSetChanged();
             return false;
         }
@@ -120,6 +110,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     private final LayoutInflater mInflater;
     private List<Note> mNotes; // Cached copy of notes
+    //private long currentDate=System.currentTimeMillis();
 
     NoteListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -139,7 +130,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             holder.titleItemView.setText(current.getTitle());
             holder.descItemView.setText(current.getDesc());
             long dateDedline= current.getDeadline();
-            long currentDate=System.currentTimeMillis();
+            long currentDate= System.currentTimeMillis();
             final int DAY=1000*60*60*24;
             //int backgroundColor = ContextCompat.getColor(View.getContext(), R.color.dedlineDown);
 
@@ -170,7 +161,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     }
 
-    void setNotes(List<Note> notes) {
+    public void setNotes(List<Note> notes) {
         mNotes = notes;
         notifyDataSetChanged();
     }
@@ -190,9 +181,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         return textDeadline;
 
     }
-
-
-
 
 }
 

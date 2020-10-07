@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,8 +29,6 @@ import static com.example.simplenotes.NoteListAdapter.checkSaveUpdate;
 
 public class MainActivity extends AppCompatActivity {
 
-    //public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
-    //public static final int UPDATE_WORD_ACTIVITY_REQUEST_CODE = 2;
     private Toolbar myToolbar;
     public static NoteViewModel mNoteViewModel;
 
@@ -83,9 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menuSetting:
+                Intent intent = new Intent(MainActivity.this, LoginSetting.class);
+                startActivity(intent);
+                finish();
                 //clickSave();
                 Toast.makeText(MainActivity.this, "Setting", Toast.LENGTH_LONG).show();
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(true)
                 .setPositiveButton("Да",
                         new DialogInterface.OnClickListener() {
-
                             public void onClick(DialogInterface dialog, int arg1) {
                                 Toast.makeText(MainActivity.this, "Заметка удалена", Toast.LENGTH_LONG).show();
                                 // Handle Positive Button
