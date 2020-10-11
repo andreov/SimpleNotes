@@ -19,8 +19,6 @@ import java.util.concurrent.Executors;
 abstract class NoteRoomDatabase extends RoomDatabase {
 
     abstract NoteDao noteDao();
-
-    // отметка экземпляра как изменчивого для обеспечения атомарного доступа к переменной
     private static volatile NoteRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
@@ -39,31 +37,17 @@ abstract class NoteRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
-    /**
-     * Override the onOpen method to populate the database.
-     * For this sample, we clear the database every time it is created or opened.
-     *
-     * If you want to populate the database only when the database is created for the 1st time,
-     * override RoomDatabase.Callback()#onCreate
-     */
+    // Начальное заполнение базы данных
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            super.onOpen(db);
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            databaseWriteExecutor.execute(() -> {
+                NoteDao dao = INSTANCE.noteDao();
+                Note note = new Note("Создайте заметку", "",0, false);
+                dao.insert(note);
 
-            // Если вы хотите сохранить данные через перезапуск приложения,
-            // закомментируйте следующий блок
-            //databaseWriteExecutor.execute(() -> {
-                // Заполнение базы данных в фоновом режиме.
-                // Если вы хотите начать с большего количества слов, просто добавьте их.
-               // WordDao dao = INSTANCE.wordDao();
-                //dao.deleteAll();
-               //Word word = new Word("Hello", "World");
-               //dao.insert(word);
-//                word = new Word("World");
-//                dao.insert(word);
-            //});
+            });
         }
     };
 }

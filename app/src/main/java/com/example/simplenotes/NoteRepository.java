@@ -28,9 +28,6 @@ class NoteRepository {
         return mAllNotes;
     }
 
-    // Вы должны вызвать это в потоке, отличном от UI, иначе ваше приложение выдаст исключение.
-    // Room гарантирует, что вы не будете выполнять какие-либо длительные операции в основном потоке,
-    // блокируя пользовательский интерфейс
     void insert(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.insert(note);

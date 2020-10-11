@@ -3,35 +3,36 @@ package com.example.simplenotes;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SaveSP {
+public class SaveSP implements KeyStore {
     public static SharedPreferences sharedPreferences;
+    public static final String KEY_SP = "SaveSP";
 
-    //
+
+
     public static SharedPreferences init(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences("Lockscreen", Context.MODE_PRIVATE);
-            //put("SAVE","");
+            //sharedPreferences.edit().putString(KEY_SP, "").apply();
         }
         return sharedPreferences;
     }
 
-    public static void put(String title, String value) {
-        sharedPreferences.edit().putString(title, value).apply();
+    public static void savePin(String value) {
+        sharedPreferences.edit().putString(KEY_SP, value).apply();
     }
 
-    public static void put(String title, int value) {
-        sharedPreferences.edit().putInt(title, value).apply();
+    public void savePin2(String pin) {
+       sharedPreferences.edit().putString(KEY_SP, pin).apply();
+
     }
 
-    public static String getString(String title, String defaultValue) {
-        return sharedPreferences.getString(title, defaultValue);
+    @Override
+    public boolean hasPin() {
+        return false;
     }
 
-    public static int getInt(String title, int defaultValue) {
-        return sharedPreferences.getInt(title, defaultValue);
-    }
-
-    public static void clearAll() {
-        sharedPreferences.edit().clear().apply();
+    @Override
+    public boolean checkPin(String pin) {
+        return false;
     }
 }

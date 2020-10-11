@@ -16,12 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import static com.example.simplenotes.SaveSP.KEY_SP;
+
 public class PinEntryView extends AppCompatActivity {
 
     private String userEntered;
     //public String userPin = "";
     public SaveSP saveSP;
-    String psw;
+    public String psw;
 
 
     private final int PIN_LENGTH = 4;
@@ -44,24 +46,25 @@ public class PinEntryView extends AppCompatActivity {
     private EditText passwordInput;
     //ImageView backSpace;
     private View.OnClickListener pinButtonHandler;
+    public SharedPreferences pswSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences pswSave=saveSP.init(this);
-        psw=pswSave.getString("SAVE","");
+        pswSave=saveSP.init(this);
+        psw=pswSave.getString(KEY_SP,"");
 
         if(psw.equals("")){
             Intent intent = new Intent(PinEntryView.this, LoginSetting.class);
             startActivity(intent);
             finish();
         }else {
-            appContext = this;
+            //appContext = this;
             userEntered = "";
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             setContentView(R.layout.activity_pin_entry_view);
             initView();
@@ -93,7 +96,7 @@ public class PinEntryView extends AppCompatActivity {
                     userEntered="";
                     passwordInput.setText("");
                     statusView.setTextColor(Color.WHITE);
-                    statusView.setText("Enter Your Password");
+                    statusView.setText("Введите пин-код");
                     keyPadLockedFlag = false;
 
                 }
@@ -146,14 +149,14 @@ public class PinEntryView extends AppCompatActivity {
                         //Check if entered PIN is correct
                         if (userEntered.equals(psw)) {
                             statusView.setTextColor(Color.GREEN);
-                            statusView.setText("Correct");
+                            statusView.setText("Правильно");
                             Log.v("PinView", "Correct PIN");
                             Intent intent = new Intent(PinEntryView.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
                             statusView.setTextColor(Color.RED);
-                            statusView.setText("Incorrect PIN. Press 'Del'");
+                            statusView.setText("Неправильный код. Нажмите 'Del'");
                             keyPadLockedFlag = true;
                             Log.v("PinView", "Wrong PIN");
 

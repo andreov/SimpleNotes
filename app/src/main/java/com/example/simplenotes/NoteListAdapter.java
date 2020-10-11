@@ -13,7 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
+
 import static com.example.simplenotes.MainActivity.mNoteViewModel;
 
 
@@ -25,15 +29,14 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     public static final String EXTRA_UPDATE_DEDLINE = "DEDLINE";
     public static final String EXTRA_UPDATE_CHECKBOX = "CHECKBOX";
     public static boolean checkSaveUpdate = false;
-
-
+    private final LayoutInflater mInflater;
+    private List<Note> mNotes;
 
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView titleItemView;
         private final TextView descItemView;
         private final TextView dateItemView;
         private final CardView cardView;
-       //private WordViewModel mWordViewModel;
 
         private NoteViewHolder(View itemView) {
             super(itemView);
@@ -41,13 +44,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             descItemView = itemView.findViewById(R.id.textViewDesc);
             dateItemView= itemView.findViewById(R.id.date);
             cardView=itemView.findViewById(R.id.cardView);
-
-//            titleItemView.setOnClickListener(this);
-//            descItemView.setOnClickListener(this);
-//            dateItemView.setOnClickListener(this);
-//            titleItemView.setOnLongClickListener(this);
-//            descItemView.setOnLongClickListener(this);
-//            dateItemView.setOnLongClickListener(this);
             cardView.setOnClickListener(this);
             cardView.setOnLongClickListener(this);
 
@@ -60,7 +56,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             String desc = noteSelect.getDesc();
             int id= noteSelect.getId();
             long millisecods= noteSelect.getDeadline();
-            //String dedline=getDate(millisecods);
             boolean checkBox=noteSelect.isCheckDead();
 
             checkSaveUpdate = true;
@@ -69,16 +64,13 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             intent.putExtra(EXTRA_UPDATE_ID, id);
             intent.putExtra(EXTRA_UPDATE_DEDLINE, millisecods);
             intent.putExtra(EXTRA_UPDATE_CHECKBOX, checkBox);
-
-            //Toast.makeText(v.getContext(),"OnClick"+id,Toast.LENGTH_LONG).show();
             v.getContext().startActivity(intent);
 
         }
 
         @Override
         public boolean onLongClick(View v) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    v.getContext());
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
             alertDialogBuilder.setTitle("Удаление заметки");
             alertDialogBuilder
                     .setMessage("Вы хотите удалить заметку?")
@@ -87,16 +79,14 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int arg1) {
                                     mNoteViewModel.delete(mNotes.get(getAdapterPosition()));
-                                    //notifyDataSetChanged();
                                     Toast.makeText(v.getContext(), "Заметка удалена", Toast.LENGTH_LONG).show();
-                                    // Handle Positive Button
                                 }
                             })
+
                     .setNegativeButton("Нет",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int arg1) {
                                     Toast.makeText(v.getContext(), "Отмена удаления", Toast.LENGTH_LONG).show();
-                                    // Handle Negative Button
                                     dialog.cancel();
                                 }
                             });
@@ -107,10 +97,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             return false;
         }
     }
-
-    private final LayoutInflater mInflater;
-    private List<Note> mNotes; // Cached copy of notes
-    //private long currentDate=System.currentTimeMillis();
 
     NoteListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -130,35 +116,27 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             holder.titleItemView.setText(current.getTitle());
             holder.descItemView.setText(current.getDesc());
             long dateDedline= current.getDeadline();
-            long currentDate= System.currentTimeMillis();
+            //long currentDate= System.currentTimeMillis();
+            //TimeZone timeZone= TimeZone.getDefault();
+            Calendar calendar=Calendar.getInstance();
+            long currentDate= calendar.getTimeInMillis();
             final int DAY=1000*60*60*24;
-            //int backgroundColor = ContextCompat.getColor(View.getContext(), R.color.dedlineDown);
-
             if((currentDate/DAY)>(dateDedline/DAY)) {
-                //holder.cardView.setBackgroundResource(R.color.dedlineDown);
-                //holder.titleItemView.setBackgroundResource(R.color.dedlineDown);
-                //holder.descItemView.setBackgroundResource(R.color.dedlineDown);
                 holder.dateItemView.setBackgroundResource(R.color.dedlineDown);
-                //holder.dateItemView.setCResource(R.color.dedlineDown);
-
             }else if((currentDate/DAY)==(dateDedline/DAY)){
-                //holder.cardView.setBackgroundResource(R.color.dedlineCurrent);
                 holder.dateItemView.setBackgroundResource(R.color.dedlineCurrent);
             }else {
                 holder.dateItemView.setBackgroundResource(R.color.cardView);
             }
-
             if(dateDedline==0)holder.dateItemView.setMaxHeight(0);
             else {
                 holder.dateItemView.setMaxHeight(100);
                 holder.dateItemView.setText(getDate(dateDedline));
             }
         } else {
-            // Covers the case of data not being ready yet.
-            holder.titleItemView.setText("No Title");
-            holder.descItemView.setText("No Desk");
+            holder.titleItemView.setText("Нет заголовка заметки");
+            holder.descItemView.setText("Нет тела заметки");
         }
-
     }
 
     public void setNotes(List<Note> notes) {
@@ -166,8 +144,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mNotes has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mNotes != null)

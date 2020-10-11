@@ -34,7 +34,7 @@
             android:layout_above="@+id/input_password_layout"
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp"
-            android:text="Enter Your Password"
+            android:text="@string/enter_your_password"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 

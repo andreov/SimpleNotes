@@ -93,7 +93,6 @@ public class NewNoteActivity extends AppCompatActivity {
         }
     }
 
-
     public void initViews(){
         mEditTitleView = findViewById(R.id.edit_title);
         mEditDescView = findViewById(R.id.edit_desc);
@@ -105,8 +104,7 @@ public class NewNoteActivity extends AppCompatActivity {
     }
 
     private void clickSave(){
-        //Intent intent = new Intent(NewNoteActivity.this, MainActivity.class);
-        if(checkSaveUpdate){ //(TextUtils.isEmpty(mEditWordView.getText())) {
+        if(checkSaveUpdate){
             String title = mEditTitleView.getText().toString();
             String desc = mEditDescView.getText().toString();
             long dedline= setDateDedline;
@@ -115,7 +113,6 @@ public class NewNoteActivity extends AppCompatActivity {
             note.setId(idUpd);
             mNoteViewModel.update(note);
             checkSaveUpdate =false;
-            //startActivity(intent);
             finish();
         } else {
             String title = mEditTitleView.getText().toString();
@@ -124,7 +121,6 @@ public class NewNoteActivity extends AppCompatActivity {
             boolean checkDedline=mCheckDeadLine.isChecked();
             Note note =new Note(title,desc,dedline,checkDedline);
             mNoteViewModel.insert(note);
-            //startActivity(intent);
             finish();
         }
     }
@@ -142,25 +138,22 @@ public class NewNoteActivity extends AppCompatActivity {
         if (mCheckDeadLine.isChecked()) {
             mButtonDeadline.setClickable(true);
             mTextDeadline.setClickable(true);
-            //mTextDeadline.setLongClickable(true);
-            //mTextDeadline.setCursorVisible(true);
             mDateDeadline=Calendar.getInstance();
             setInitialDateTime();
-            //Toast.makeText(getApplicationContext(), "Включено", Toast.LENGTH_SHORT).show();
+
         } else {
             mButtonDeadline.setClickable(false);
             mTextDeadline.setLongClickable(false);
             mTextDeadline.setCursorVisible(false);
             mTextDeadline.setClickable(false);
-            //mTextDeadline.setFocusable(false);
             mTextDeadline.setText(null);
             setDateDedline =0;
-            //Toast.makeText(getApplicationContext(), "Выключено", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void noteUpdate(boolean checkUpdate){
         if(checkUpdate){
+            getSupportActionBar().setTitle(R.string.editNote);
             String titleUpd=getIntent().getSerializableExtra(EXTRA_UPDATE_TITLE).toString();
             String descUpd=getIntent().getSerializableExtra(EXTRA_UPDATE_DESC).toString();
             idUpd=(int)getIntent().getSerializableExtra(EXTRA_UPDATE_ID);
@@ -177,7 +170,7 @@ public class NewNoteActivity extends AppCompatActivity {
                 mTextDeadline.setClickable(true);
                 mTextDeadline.setText(DateUtils.formatDateTime(this, dedline,
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
-                //setDateDedline =dedline;
+                setDateDedline =dedline;
             }
             else {
                 setDateDedline =0;

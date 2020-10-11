@@ -15,6 +15,7 @@ public class LoginSetting extends AppCompatActivity {
     private EditText newPsw;
     private Button buttonSetting;
     private String userPin;
+    //public KeyStore keyStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class LoginSetting extends AppCompatActivity {
                     return;
 
                 }else {
-                    saveSP.put("SAVE",userPin);
+                    saveSP.savePin(userPin);
                     Intent intent = new Intent(LoginSetting.this, PinEntryView.class);
                     startActivity(intent);
                     finish();
@@ -42,6 +43,5 @@ public class LoginSetting extends AppCompatActivity {
 
             }
         });
-
     }
 }

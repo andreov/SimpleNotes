@@ -35,7 +35,6 @@ public class Note {
     public Note(@NonNull String mTitle, String mDesc, long mDeadline, boolean mCheckDead) {
         this.mTitle = mTitle;
         this.mDesc = mDesc;
-        //this.mDate = mDate;
         this.mDeadline = mDeadline;
         this.mCheckDead = mCheckDead;
     }
@@ -52,16 +51,8 @@ public class Note {
         return mDeadline;
     }
 
-    public void setDeadline(long mDeadline) {
-        this.mDeadline = mDeadline;
-    }
-
     public boolean isCheckDead() {
         return mCheckDead;
-    }
-
-    public void setCheckDead(boolean mCheckDead) {
-        this.mCheckDead = mCheckDead;
     }
 
     public int getId() {
@@ -76,17 +67,11 @@ public class Note {
         return mTitle;
     }
 
-    public void setTitle(String mWord) {
-        this.mTitle = mTitle;
-    }
-
     public String getDesc() {
         return mDesc;
     }
 
-    public void setDesc(String mDesc) {
-        this.mDesc = mDesc;
-    }
+
 
 
 
