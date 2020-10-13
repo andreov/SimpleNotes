@@ -1,7 +1,7 @@
 package com.example.simplenotes;
 
 public interface KeyStore {
-    void savePin2(String pin);
+    void savePin(String pin);
     boolean hasPin();
     boolean checkPin(String pin);
 

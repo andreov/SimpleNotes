@@ -1,6 +1,8 @@
 package com.example.simplenotes;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +13,20 @@ import android.widget.Toast;
 
 public class LoginSetting extends AppCompatActivity {
 
-    public SaveSP saveSP;
+    public SaveSP saveSP = new SaveSP();
     private EditText newPsw;
     private Button buttonSetting;
     private String userPin;
-    //public KeyStore keyStore;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_setting);
+        myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        //ActionBar actionbar = getSupportActionBar();
+        getSupportActionBar().setTitle(R.string.newPassword);
 
         newPsw = findViewById(R.id.textPassword);
         buttonSetting=findViewById(R.id.buttonOK);
