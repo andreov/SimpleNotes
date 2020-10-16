@@ -34,7 +34,7 @@
             android:textSize="20sp"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="50dp"
-            android:hint="Введите новый пароль"
+            android:hint="@string/hintPin"
             android:maxLength="4"
             android:inputType="numberPassword" />
     </com.google.android.material.textfield.TextInputLayout>

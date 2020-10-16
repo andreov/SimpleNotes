@@ -1,6 +1,7 @@
 package com.example.simplenotes;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import java.util.Calendar;
 import static com.example.simplenotes.MainActivity.mNoteViewModel;
@@ -169,7 +171,7 @@ public class NewNoteActivity extends AppCompatActivity {
                 mButtonDeadline.setClickable(true);
                 mTextDeadline.setClickable(true);
                 mTextDeadline.setText(DateUtils.formatDateTime(this, dedline,
-                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
                 setDateDedline =dedline;
             }
             else {
@@ -180,13 +182,14 @@ public class NewNoteActivity extends AppCompatActivity {
         }else return;
     }
 
-    // отображаем диалоговое окно для выбора времени
+    // отображаем диалоговое окно для выбора Date
     public void setDate(View v) {
         new DatePickerDialog(NewNoteActivity.this, d,
                 mDateDeadline.get(Calendar.YEAR),
                 mDateDeadline.get(Calendar.MONTH),
                 mDateDeadline.get(Calendar.DAY_OF_MONTH))
                 .show();
+        setTime(v);
     }
 
     // установка обработчика выбора даты
@@ -199,10 +202,27 @@ public class NewNoteActivity extends AppCompatActivity {
         }
     };
 
+    public void setTime(View v) {
+        new TimePickerDialog(NewNoteActivity.this, t,
+                mDateDeadline.get(Calendar.HOUR_OF_DAY),
+                mDateDeadline.get(Calendar.MINUTE), true)
+                .show();
+
+    }
+
+    //установка обработчика выбора времени
+    TimePickerDialog.OnTimeSetListener t=new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            mDateDeadline.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mDateDeadline.set(Calendar.MINUTE, minute);
+            setInitialDateTime();
+        }
+    };
+
     // установка начальных даты и времени
     private void setInitialDateTime() {
         mTextDeadline.setText(DateUtils.formatDateTime(this, mDateDeadline.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
         setDateDedline = mDateDeadline.getTimeInMillis();
     }
 

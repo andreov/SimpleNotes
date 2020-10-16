@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -31,6 +33,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
     public static boolean checkSaveUpdate = false;
     private final LayoutInflater mInflater;
     private List<Note> mNotes;
+    Calendar calendar=Calendar.getInstance();
 
     class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView titleItemView;
@@ -118,7 +121,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             long dateDedline= current.getDeadline();
             //long currentDate= System.currentTimeMillis();
             //TimeZone timeZone= TimeZone.getDefault();
-            Calendar calendar=Calendar.getInstance();
+            calendar=Calendar.getInstance();
             long currentDate= calendar.getTimeInMillis();
             final int DAY=1000*60*60*24;
             if((currentDate/DAY)>(dateDedline/DAY)) {
@@ -131,7 +134,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             if(dateDedline==0)holder.dateItemView.setMaxHeight(0);
             else {
                 holder.dateItemView.setMaxHeight(100);
-                holder.dateItemView.setText(getDate(dateDedline));
+                Context context = holder.itemView.getContext();
+                holder.dateItemView.setText(getDate(dateDedline, context));
             }
         } else {
             holder.titleItemView.setText("Нет заголовка заметки");
@@ -151,9 +155,10 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         else return 0;
     }
 
-    private String getDate(long millisecods) {
-        String textDeadline= DateUtils.formatDateTime(null, millisecods,
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR);
+    private String getDate(long millisecods, Context context) {
+        Date date = new Date(millisecods);
+        String textDeadline= DateUtils.formatDateTime(context, date.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME);
         return textDeadline;
 
     }

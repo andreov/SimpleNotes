@@ -10,7 +10,8 @@
     <string name="save">Save</string>
     <string name="newNote">Новая заметка</string>
     <string name="editNote">Редактирование заметки</string>
-    <string name="newPassword">Новый пароль</string>
+    <string name="newPassword">Новый пин-код</string>
     <string name="enter_your_password">Введите пин-код</string>
+    <string name="hintPin">Введите новый пин-код</string>
 
 </resources>
