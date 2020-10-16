@@ -119,18 +119,6 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
             holder.titleItemView.setText(current.getTitle());
             holder.descItemView.setText(current.getDesc());
             long dateDedline= current.getDeadline();
-            //long currentDate= System.currentTimeMillis();
-            //TimeZone timeZone= TimeZone.getDefault();
-            calendar=Calendar.getInstance();
-            long currentDate= calendar.getTimeInMillis();
-            final int DAY=1000*60*60*24;
-            if((currentDate/DAY)>(dateDedline/DAY)) {
-                holder.dateItemView.setBackgroundResource(R.color.dedlineDown);
-            }else if((currentDate/DAY)==(dateDedline/DAY)){
-                holder.dateItemView.setBackgroundResource(R.color.dedlineCurrent);
-            }else {
-                holder.dateItemView.setBackgroundResource(R.color.cardView);
-            }
             if(dateDedline==0)holder.dateItemView.setMaxHeight(0);
             else {
                 holder.dateItemView.setMaxHeight(100);
