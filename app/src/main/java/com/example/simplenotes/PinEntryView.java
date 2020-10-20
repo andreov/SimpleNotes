@@ -1,8 +1,8 @@
 package com.example.simplenotes;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import static com.example.simplenotes.SaveSP.KEY_SP;
 
 public class PinEntryView extends AppCompatActivity {
 
     private String userEntered;
-    public SaveSP saveSP = new SaveSP();
     public String psw;
     private final int PIN_LENGTH = 4;
-    private boolean keyPadLockedFlag = false;
     private TextView statusView;
     private Button button0;
     private Button button1;
@@ -34,20 +31,18 @@ public class PinEntryView extends AppCompatActivity {
     private ImageButton buttonDelete;
     private EditText passwordInput;
     private View.OnClickListener pinButtonHandler;
-    public SharedPreferences pswSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pswSave=saveSP.init(this);
-        psw=pswSave.getString(KEY_SP,"");
+        psw = App.getKeyStore().readPin(this);
 
-        if(psw.equals("")){
+        if (psw.equals("")) {
             Intent intent = new Intent(PinEntryView.this, LoginSetting.class);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             userEntered = "";
             setContentView(R.layout.activity_pin_entry_view);
             initView();
@@ -58,8 +53,8 @@ public class PinEntryView extends AppCompatActivity {
 
     }
 
-    public void initView(){
-        statusView = findViewById(R.id.haha_text );
+    public void initView() {
+        statusView = findViewById(R.id.haha_text);
         passwordInput = findViewById(R.id.dotText);
         passwordInput.setFocusable(false);
         passwordInput.setClickable(false);
@@ -67,22 +62,22 @@ public class PinEntryView extends AppCompatActivity {
 
     }
 
-    public void setButtonDelete(){
+    public void setButtonDelete() {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (userEntered.length() > 0) {
-                    userEntered="";
+                    userEntered = "";
                     passwordInput.setText("");
                     statusView.setTextColor(Color.WHITE);
                     statusView.setText("Введите пин-код");
-                    keyPadLockedFlag = false;
+                    //keyPadLockedFlag = false;
 
                 }
             }
         });
     }
 
-    public void initButton(){
+    public void initButton() {
         button0 = findViewById(R.id.lbtn0);
         button0.setOnClickListener(pinButtonHandler);
         button1 = findViewById(R.id.lbtn1);
@@ -91,7 +86,7 @@ public class PinEntryView extends AppCompatActivity {
         button2.setOnClickListener(pinButtonHandler);
         button3 = findViewById(R.id.lbtn3);
         button3.setOnClickListener(pinButtonHandler);
-        button4 =  findViewById(R.id.lbtn4);
+        button4 = findViewById(R.id.lbtn4);
         button4.setOnClickListener(pinButtonHandler);
         button5 = findViewById(R.id.lbtn5);
         button5.setOnClickListener(pinButtonHandler);
@@ -105,12 +100,10 @@ public class PinEntryView extends AppCompatActivity {
         button9.setOnClickListener(pinButtonHandler);
     }
 
-    public void clickDigButton(){
+    public void clickDigButton() {
         pinButtonHandler = new View.OnClickListener() {
             public void onClick(View v) {
-                if (keyPadLockedFlag == true) {
-                    return;
-                }
+
                 Button pressedButton = (Button) v;
                 if (userEntered.length() < PIN_LENGTH) {
                     userEntered = userEntered + pressedButton.getText();
@@ -129,7 +122,6 @@ public class PinEntryView extends AppCompatActivity {
                         } else {
                             statusView.setTextColor(Color.RED);
                             statusView.setText("Неправильный код. Нажмите 'Del'");
-                            keyPadLockedFlag = true;
                             Log.v("PinView", "Wrong PIN");
                         }
                     }

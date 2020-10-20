@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static com.example.simplenotes.NoteListAdapter.checkSaveUpdate;
+
 public class LoginSetting extends AppCompatActivity {
 
-    public SaveSP saveSP = new SaveSP();
+    //public SaveSP saveSP = new SaveSP();
     private EditText newPsw;
     private Button buttonSetting;
     private String userPin;
@@ -40,7 +42,7 @@ public class LoginSetting extends AppCompatActivity {
                     return;
 
                 }else {
-                    saveSP.savePin(userPin);
+                    App.getKeyStore().savePin(userPin);
                     Intent intent = new Intent(LoginSetting.this, PinEntryView.class);
                     startActivity(intent);
                     finish();
@@ -49,5 +51,12 @@ public class LoginSetting extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(LoginSetting.this, PinEntryView.class);
+        startActivity(intent);
+        finish();
     }
 }

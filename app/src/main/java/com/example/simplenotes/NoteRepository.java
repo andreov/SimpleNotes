@@ -34,13 +34,13 @@ class NoteRepository {
         });
     }
 
-    void delete(Note note){
+    void delete(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.delete(note);
         });
     }
 
-    void update(Note note){
+    void update(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.update(note);
         });

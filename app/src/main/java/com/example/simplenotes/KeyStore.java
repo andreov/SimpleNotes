@@ -1,8 +1,8 @@
 package com.example.simplenotes;
 
+import android.content.Context;
+
 public interface KeyStore {
     void savePin(String pin);
-    boolean hasPin();
-    boolean checkPin(String pin);
-
+    String readPin(Context context);
 }
