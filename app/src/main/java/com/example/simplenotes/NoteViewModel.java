@@ -22,7 +22,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     public NoteViewModel(Application application) {
         super(application);
-        mRepository = new NoteRepository(application);
+        mRepository = App.getDbNote();//new NoteRepository(application);
         mAllNotes = mRepository.getAllNotes();
     }
 

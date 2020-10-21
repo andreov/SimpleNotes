@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
  // Это бэкэнд. База данных.
 
-@Database(entities = {Note.class}, version = 8, exportSchema = false)
+@Database(entities = {Note.class}, version = 1, exportSchema = false)
 abstract class NoteRoomDatabase extends RoomDatabase {
 
     abstract NoteDao noteDao();
@@ -29,7 +29,7 @@ abstract class NoteRoomDatabase extends RoomDatabase {
             synchronized (NoteRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            NoteRoomDatabase.class, "note_database4")
+                            NoteRoomDatabase.class, "note_database5")
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
