@@ -13,5 +13,6 @@
     <string name="newPassword">Новый пин-код</string>
     <string name="enter_your_password">Введите пин-код</string>
     <string name="hintPin">Введите новый пин-код</string>
+    <string name="dedline">Дедлайн</string>
 
 </resources>
